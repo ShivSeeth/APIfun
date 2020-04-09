@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+	<title>API Fun: Report of the Week API</title>
+	<meta charset="utf-8"/>
+	<script>
+		function getData() {
+			request = new XMLHttpRequest();
+			request.open("GET", "https://thereportoftheweek-api.herokuapp.com/reports", true);
+
+			request.onreadystatechange = function() {
+ 
+				if (request.readyState == 4 && request.status == 200) {
+
+					result = request.responseText;
+					reviews = JSON.parse(result);
+					
+					document.getElementById("data").innerHTML = null;
+					for (i = 0; i < reviews.length; i++) {
+						if (reviews[i].manufacturer == "McDonald's") {
+							document.getElementById("data").innerHTML += "Product: " + reviews[i].product + "<br> Rating: " + reviews[i].rating + "<br><br>";
+						}
+					} 
+					
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+
+				}
+
+				else if (request.readyState == 3) {
+
+					document.getElementById("data").innerHTML = "Loading";
+
+				}
+
+			}
+			request.send();
+		}
+	</script>
+</head>
+
+
+<body onload="getData()">
+
+	<h1>API Fun: Report of the Week API</h1>
+	<P>Describe the API you selected and what it does: This API is a record of all of the food reviews done from the Youtube channel "Report of the Week"</P>
+	<p>Cite the website where you found it: https://github.com/public-apis/public-apis#index</p>
+	<p>Describe the options you used for the API request: I'm not sure I understand this question but I used an if statement to make sure the ready state was done and that the HTTP status was a success and then I ran through the parsed JSON data to show the product name and rating for only the McDonald's reviews. I also included options for if the HTTP status was not a success and if the ready state was loading.  
+	<p>Two applications where this API would be helpful: This API could be helpful for a website that wanted to compile food reviews for different fast food items. This API would also be useful if anyone wanted to make a website specifically for this youtube channel</p>
+	<h3> All McDonald's reviews from "Report of the Week Youtube Channel"</h3>
+
+	<div id="data"></div>
+</body>
+</html>
